@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Menu Lateral</title>
+    <style>
+            .switch {
+                position: absolute;
+                margin-left: -9999px;
+                visibility: hidden;
+            }
+
+                .switch + label {
+                    display: block;
+                    position: relative;
+                    cursor: pointer;
+                    outline: none;
+                    user-select: none;
+                }
+
+            /*bolinha externa esticada para simular espaço onde a bolinha interna corre*/
+            .switch--shadow + label {
+                padding: 2px;
+                width: 40px;
+                height: 15px; /*Tamanho da bolinha*/
+                background-color: #dddddd;
+                border-radius: 60px;
+            }
+
+                /*bolinha interna*/
+                .switch--shadow + label:before,
+                .switch--shadow + label:after {
+                    display: block;
+                    position: absolute;
+                    top: 1px;
+                    left: 1px;
+                    bottom: 1px;
+                    content: "";
+                }
+
+                /*sombreado da bolinha externa*/
+                .switch--shadow + label:before {
+                    right: 1px;
+                    background-color: #cc0000;
+                    background-image: url("images/nao.png");
+                    background-repeat: no-repeat;
+                    background-position-x: right;
+                    border-radius: 60px;
+                    transition: all 0.4s;
+                }
+
+                /*bolinha interna*/
+                .switch--shadow + label:after {
+                    width: 18px;
+                    background-color: #fff;
+                    border-radius: 100%;
+                    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+                    transition: all 0.4s;
+                }
+
+            .switch--shadow:checked + label:before {
+                background-color: #1155cc;
+                background-image: url("images/sim.png");
+                background-repeat: no-repeat;
+                background-position-x: left;
+            }
+
+            .switch--shadow:checked + label:after {
+                transform: translateX(30px);
+            }
+    </style>
+    <body>
+        <div class="switch__container">
+            <input id="switch-shadow" class="switch switch--shadow" type="checkbox">
+            <label for="switch-shadow"></label>
+        </div>
+    </body>
+</html>

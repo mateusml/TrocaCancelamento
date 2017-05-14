@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Menu Lateral</title>
+    <link href="bootstrap-toggle/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bootstrap/css/bootstrap-datepicker.min.css" rel="stylesheet">
+    <!--link href="bootstrap/css/ofpagefilters.css" rel="stylesheet"-->
+    <script src="javascripts/jquery-3.1.1.min.js"></script>
+    <script src="javascripts/moment.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="bootstrap/js/bootstrap-datepicker.min.js"></script>
+    <!--<script src="javascripts/jquery.min.js"></script>-->
+    <script src="bootstrap-toggle/js/bootstrap-toggle.min.js"></script>
+    <!--<script src="javascripts/ofpagefilters.js"></script>-->
+
+    <style>
+        /* reseta valores iniciais de pagina */
+        
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            background: #f9f9f9;
+        }
+        
+        header {
+            width: 100%;
+            height: 60px;
+            top: 0;
+            left: 0;
+            background-color: #0083CA;
+            position: fixed;
+            z-index: 1;
+        }
+        
+        nav {
+            width: 100%;
+            position: absolute;
+            top: 60px;
+        }
+        
+        nav a {
+            text-decoration: none;
+        }
+        
+        ul {
+            list-style: none;
+        }
+        
+        .rotuloChk {
+            font-size: 18px;
+            color: #ccc;
+            background: #cc0000;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: block;
+        }
+        
+        ul li a {
+            display: block;
+            font-size: 18px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding: 10px;
+            border-bottom: solid 1px #000;
+            color: #ccc;
+            text-decoration: none;
+            transition: all .2s;
+        }
+        
+        ul li span {
+            float: right;
+            padding-right: 10px;
+        }
+        
+        ul li a:hover {
+            background-color: #5b859a;
+            text-decoration: none;
+        }
+        
+        .link {
+            background-color: #6CA6CD;
+            padding: 20px;
+            font-family: 'Trebuchet MS';
+            font-size: 12pt;
+            transition: all .2s linear;
+            color: #f4f4f9;
+            border-bottom: 2px solid #CDCDB4;
+            opacity: 0;
+            margin-top: 200px;
+        }
+        
+        .link:hover {
+            background-color: #0000CD;
+        }
+        
+        #icone {
+            width: 23px;
+            height: 23px;
+            cursor: pointer;
+            padding: 15px;
+            z-index: 1;
+            position: absolute;
+        }
+        
+        .menu {
+            background-color: #444;
+            height: 100%;
+            width: 300px;
+            position: fixed;
+            top: 0;
+            overflow: hidden;
+            transition: all .2s;
+        }
+        /* Influencia na visualização da opção FILTRAR  */
+        
+        .navChksSituacao {
+            background-color: #02659B;
+            width: 10px;
+            height: 376px;
+            position: fixed;
+            top: 0;
+            overflow: hidden;
+            transition: all .2s;
+        }
+        /* Influencia na visualização da opção VOLTAR  */
+        
+        .voltar {
+            margin-top: 204px;
+            /* Posição da coluna iniciando no botão Voltar */
+            background-color: #111;
+            /*border-left: solid 5px #444;*/
+        }
+        
+        .bg {
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            position: fixed;
+            background-color: rgba(0, 0, 0, .2);
+            display: none;
+        }
+        
+        #principal {
+            width: 350px;
+            left: -350px;
+        }
+        
+        #Situacao {
+            width: 400px;
+            left: -400px;
+        }
+        
+        #Situacao:target {
+            transform: translateX(600px);
+            box-shadow: 2px 2px 5px 2px rgba(0, 0, 0, .5);
+        }
+        
+        #Ativas,
+        #Inativas,
+        #Finalizadas {
+            width: 300px;
+            left: -300px;
+        }
+        
+        #Ativas:target,
+        #Inativas:target,
+        #Finalizadas:target {
+            transform: translateX(500px);
+            box-shadow: 2px 2px 5px 2px rgba(0, 0, 0, .5);
+        }
+        
+        #TipoOperacao {
+            width: 550px;
+            left: -550px;
+        }
+        
+        #TipoOperacao:target {
+            transform: translateX(750px);
+            box-shadow: 2px 2px 5px 2px rgba(0, 0, 0, .5);
+        }
+        
+        #Normal,
+        #Simultanea,
+        #Excecao {
+            width: 250px;
+            left: -250px;
+        }
+        
+        #Normal:target,
+        #Simultanea:target,
+        #Excecao:target {
+            transform: translateX(450px);
+            box-shadow: 2px 2px 5px 2px rgba(0, 0, 0, .5);
+        }
+        
+        #check {
+            display: none;
+        }
+        
+        #check:checked~.bg {
+            display: block;
+        }
+        
+        #check:checked~#principal {
+            transform: translateX(350px);
+            box-shadow: 2px 2px 5px 2px rgba(0, 0, 0, .5);
+        }
+        
+        #check:checked~#principal nav a .link {
+            opacity: 1;
+            margin-top: 0px;
+            transition-delay: .2s;
+        }
+        
+        .switch {
+            position: absolute;
+            margin-left: -9999px;
+            visibility: hidden;
+        }
+        
+        .switch+label {
+            display: block;
+            position: relative;
+            cursor: pointer;
+            outline: none;
+            user-select: none;
+        }
+        /*bolinha externa esticada para simular espaço onde a bolinha interna corre*/
+        
+        .switch--shadow+label {
+            padding: 2px;
+            width: 50px;
+            height: 20px;
+            /*Tamanho da bolinha*/
+            background-color: #dddddd;
+            border-radius: 60px;
+        }
+        /*bolinha interna*/
+        
+        .switch--shadow+label:before,
+        .switch--shadow+label:after {
+            display: block;
+            position: absolute;
+            top: 1px;
+            left: 1px;
+            bottom: 1px;
+            content: "";
+        }
+        /*sombreado da bolinha externa*/
+        
+        .switch--shadow+label:before {
+            right: 1px;
+            background-color: #cc0000;
+            background-image: url("../../images/nao.png");
+            background-repeat: no-repeat;
+            background-position-x: right;
+            border-radius: 60px;
+            transition: all 0.4s;
+        }
+        /*bolinha interna*/
+        
+        .switch--shadow+label:after {
+            width: 18px;
+            background-color: #fff;
+            border-radius: 100%;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            transition: all 0.4s;
+        }
+        
+        .switch--shadow:checked+label:before {
+            background-color: #1155cc;
+            background-image: url("images/sim.png");
+            background-repeat: no-repeat;
+            background-position-x: left;
+        }
+        
+        .switch--shadow:checked+label:after {
+            transform: translateX(30px);
+        }
+        
+        .txtPesquisa {
+            background-color: #fff;
+            width: 450px;
+            height: 35px;
+            margin-top: 10px;
+            text-align: center;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        
+        .divCentralizaHeader {
+            margin: 12px auto;
+            float: left;
+            /*width: 50%;
+            height: 50%;*/
+        }
+        
+        .divMenusHorizontaisTopo {
+            margin: 0px auto;
+            width: 100%;
+            float: left;
+            background: #02659B;
+            position: relative;
+            padding: 15px;
+        }
+        
+        .oNoffAtivasInativas {
+            margin: 0px auto;
+            width: 26%;
+            float: left;
+            background: #02659B;
+            position: relative;
+        }
+        
+        .tipoOperacoes {
+            margin: 0px 0px;
+            width: 70%;
+            float: left;
+            background: #02659B;
+            position: relative;
+        }
+        
+        .divPesquisa {
+            width: 500px;
+            float: left;
+            /*height: 70px;*/
+        }
+        
+        .container_2 {
+            width: 100%;
+            background: rgba(0, 0, 0, .7);
+            border-bottom: 1px solid #444;
+            /*text-align: center;*/
+        }
+        
+        .boxCheck {
+            float: left;
+            width: 100px;
+            height: 40px;
+            text-align: center;
+            color: #fff;
+            margin: 10px 20px;
+            padding: 10px 0 10px;
+            display: block;
+            margin: 5px;
+            font-size: 18px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        /*Traço multicores */
+        
+        .traco-multicolor {
+            margin-top: -5px;
+            float: left;
+            height: 5px;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .yellow {
+            background-color: #FFCE00;
+            width: 10%;
+            height: 5px;
+            float: left;
+        }
+        
+        .orange {
+            background-color: #F39C12;
+            width: 10%;
+            height: 5px;
+            float: left;
+        }
+        
+        .red {
+            background-color: #E25335;
+            width: 10%;
+            height: 5px;
+            float: left;
+        }
+        
+        .rose {
+            background-color: #DE349E;
+            width: 10%;
+            height: 5px;
+            float: left;
+        }
+        
+        .purple {
+            background-color: #BF2FDC;
+            width: 10%;
+            height: 5px;
+            float: left;
+        }
+        
+        .deep-purple {
+            background-color: #5D33D5;
+            width: 10%;
+            height: 5px;
+            float: left;
+        }
+        
+        .blue {
+            background-color: #2B7CD7;
+            width: 10%;
+            height: 5px;
+            float: left;
+        }
+        
+        .spnTroca {
+            background-color: #2B7CD7;
+            width: 100%;
+            height: 15%;
+            float: left;
+        }
+        
+        .spnCancelamento {
+            background-color: #cc0000;
+            width: 100%;
+            height: 15%;
+            float: left;
+        }
+        
+        .cyan {
+            background-color: #33C3DD;
+            width: 10%;
+            height: 5px;
+            float: left;
+        }
+        
+        .light-green {
+            background-color: #32D9A1;
+            width: 10%;
+            height: 5px;
+            float: left;
+        }
+        
+        .green {
+            background-color: #3FCB2A;
+            width: 10%;
+            height: 5px;
+            float: left;
+        }
+        /*Fim traços multicores */
+        
+        .oNoffTrocaCancelamento {
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            width: 350px;
+            padding: 50px auto;
+            float: left;
+        }
+        
+        .btn-default.active,
+        .btn-default:active,
+        .open>.dropdown-toggle.btn-default {
+            background-color: #e61f1f;
+            color: #fff;
+        }
+        
+        .btn-default.active.focus,
+        .btn-default.active:focus,
+        .btn-default.active:hover,
+        .btn-default:active.focus,
+        .btn-default:active:focus,
+        .btn-default:active:hover,
+        .open>.dropdown-toggle.btn-default.focus,
+        .open>.dropdown-toggle.btn-default:focus,
+        .open>.dropdown-toggle.btn-default:hover {
+            background-color: #c90f0f;
+            color: #fff;
+        }
+        
+        .titulo {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 25px;
+            color: #fff;
+        }
+        
+        .imglogo {
+            margin: -2px 50px;
+            width: 240px;
+            height: auto;
+        }
+        
+        .chkFinalizadas {
+            font-family: "Trebuchet MS";
+            color: white;
+        }
+        
+        #OnOffFinalizadas {
+            color: yellow;
+        }
+        /*.divLogo {
+            width: 100%;
+            /*height: 10px;
+        }*/
+    </style>
+    <script>
+        $(document).ready(function () {
+            // Valores inicias de filtragem
+            var normal = 1;  // - Default
+            var excecao = 0;
+            var simultanea = 0;
+
+            var B2b = '0';
+            var tipoOcorrencia = '2';
+            var ativas = 1;  // - Default
+            var inativas = 0;
+            var finalizadas = 0;
+
+            $("#chkNormal").click(function () {
+                isCheck = $("#chkNormal").is(":checked");
+                if (isCheck == true) {
+                    normal = 1;
+                    $("#chkNormal").val(normal);
+
+                } else {
+                    normal = 0;
+                    $("#chkNormal").val(normal);
+                }
+            });
+
+            $("#chkSimultanea").click(function () {
+                isCheck = $("#chkSimultanea").is(":checked");
+                if (isCheck == true) {
+                    simultanea = 1;
+                    $("#chkSimultanea").val(simultanea);
+
+                } else {
+                    simultanea = 0;
+                    $("#chkSimultanea").val(simultanea);
+                }
+
+            });
+
+            $("#chkExcecao").click(function () {
+                isCheck = $("#chkExcecao").is(":checked");
+                if (isCheck == true) {
+                    excecao = 1;
+                    $("#chkExcecao").val(excecao);
+                } else {
+                    excecao = 0;
+                    $("#chkExcecao").val(excecao);
+                }
+            });
+
+
+            $("#Ativa").click(function () {
+                ativas = 1;
+            });
+
+            $("#Inativa").click(function () {
+                inativas = 1;
+            });
+
+            $("#Finalizada").click(function () {
+                finalizadas = 1;
+            });
+
+            $("#Filtrar").click(function () {
+                FiltrarOcorrencias()
+            });
+
+
+            $("#btnBuscar").click(function () {
+                FiltrarOcorrencias()
+            });
+
+
+            function FiltrarOcorrencias() {
+                console.log("TipoOcorrencia: " + tipoOcorrencia);
+                console.log("B2b: " + B2b);
+                console.log("Data Inicial: " + $('#dataInicial').val());
+                console.log("Data Final: " + $('#dataFinal').val());
+                alert("N: " + normal + " S: " + simultanea + " E: " + excecao + " A: " + ativas + " I: " + inativas + " F: " + finalizadas);
+            }
+
+            /* datepicker */
+            $('#dataInicial')
+                .datepicker({
+                    format: "dd/mm/yyyy",
+                    language: "pt-BR",
+                    minViewMode: 0,
+                    autoclose: 1,
+                    todayHighlight: 1
+                })
+                .on('changeDate', function () {
+                    var datanova = moment($('#dataInicial').val(), 'DD/MM/YYYY').add(30, 'days').format('DD/MM/YYYY');
+                    $('#dataFinal').val(datanova);
+                });
+
+
+            $('#chkTrocaCanc').change(function () {
+                stateCheck = $('#chkTrocaCanc').val();
+                console.log('stateCheck: ' + stateCheck);
+                if (stateCheck == 'on') {
+                    $('#chkTrocaCanc').val('off');
+                    console.log('Troca');
+                    tipoOcorrencia = 2;
+                } else {
+                    $('#chkTrocaCanc').val('on');
+                    console.log('Cancelamento');
+                    tipoOcorrencia = 1;
+                }
+            });
+
+            $('#chkB2b').change(function () {
+                stateCheck = $('#chkB2b').val();
+                if (stateCheck == 'on') {
+                    $('#chkB2b').val('off');
+                    B2b = 1;
+                } else {
+                    $('#chkB2b').val('on');
+                    B2b = 0;
+                }
+            });
+
+            $('#chkFinalizadas').click(function () {
+                stateCheck = $('#chkFinalizadas').val();
+                console.log(stateCheck);
+                if (stateCheck == 'on') {
+                    console.log($('#chkFinalizadas').html("SIM"));
+                    $('#chkFinalizadas').val('off');
+
+                    $('#OnOffFinalizadas').html("SIM");
+
+                    Finalizadas = 1;
+                } else {
+                    console.log($('#chkFinalizadas').html("NÃO"));
+                    $('#chkFinalizadas').val('on');
+                    $('#OnOffFinalizadas').html("NÃO");
+                    Finalizadas = 0;
+                }
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <header>
+        <div class="divCentralizaHeader">
+            <!--span class="titulo">TDC - OCORRÊNCIAS</span-->
+            <img src="../images/logoml2016.png" class="imglogo">
+        </div>
+        <div class="divMenusHorizontaisTopo">
+            <div class="oNoffTrocaCancelamento">
+                <label class="checkbox-inline">
+                    <input type="checkbox" id="chkTrocaCanc" checked data-toggle="toggle" data-on="TROCA" data-off="CANCELAMENTO" data-size="large">
+                </label>
+                <label class="checkbox-inline">
+                    <input type="checkbox" id="chkB2b" checked data-toggle="toggle" data-on="B2C" data-off="B2B" data-size="large">
+                </label>
+            </div>
+            <div class="divPesquisa">
+                <div class="input-group">
+                    <!--Estava faltando essa div-->
+                    <input type="text" style="height: 47px;" class="form-control" id="searchBar" placeholder="Pedido gemco, site, ocorrência, cpfcnpj"
+                    />
+                    <span class="input-group-btn">
+                        <!--Estava faltando esse span-->
+                        <button type="submit" style="height: 47px;" class="btn btn-info" value="Procurar">
+                            <span class="glyphicon glyphicon-search"></span>
+                    </button>
+                    </span>
+                </div>
+            </div>
+            <div id="txtCalendarios" style="width:320px; float:left">
+                <div style="width:110px; padding-left:100px; float:left">
+                    <input type="text" style="width: 100px; height: 47px;" id="dataInicial" class="form-control" placeholder="Data Inicial">
+                </div>
+                <div style="width:110px; padding-left:5px; float:right">
+                    <input type="text" style="width: 100px; height: 47px;" id="dataFinal" class="form-control" placeholder="Data Final">
+                </div>
+            </div>
+            <div style="width:110px; padding-left:10px; float:right">
+                <button id='btnBuscar' class="btn btn-info btn-lg" value='Buscar'>BUSCAR</button>
+            </div>
+        </div>
+
+        <!-- Área de filtros Ativas; Invativas; Normais; Simultaneas; Exceções -->
+
+        <div class="divMenusHorizontaisTopo">
+            <div class="oNoffAtivasInativas">
+                <label class="checkbox-inline">
+                    <input type="checkbox" id="chkTrocaCanc" checked data-toggle="toggle" data-on="ATIVAS" data-off="CANCELADAS" data-size="large">
+                </label>
+                <label class="chkFinalizadas"><input type="checkbox" id="chkFinalizadas"> Finalizadas ? <span id="OnOffFinalizadas">NÃO</span></label>
+            </div>
+            <div class="tipoOperacoes">
+                <label class="checkbox-inline">
+                    <input type="checkbox" id="chkTrocaCanc" checked data-toggle="toggle" data-on="ATIVAS" data-off="CANCELADAS" data-size="large">
+                </label>
+                <label class="chkFinalizadas"><input type="checkbox" id="chkFinalizadas"> Finalizadas ? <span id="OnOffFinalizadas">NÃO</span></label>
+            </div>
+        </div>
+
+
+        <div id="topo" class="divTopo">
+            <div id="traco" class="traco-multicolor">
+                <span class="yellow"></span><span class="orange"></span><span class="red"></span><span class="rose"></span>
+                <span class="purple"></span>
+                <span class="deep-purple"></span><span class="blue"></span><span class="cyan"></span><span class="light-green"></span>
+                <span class="green"></span>
+            </div>
+        </div>
+    </header>
+    <div class="bg"></div>
+    <input type="checkbox" id="check">
+    <label id="icone" for="check"><img src="images/OpenCloseMenu.png" width="23px" height="23px"></label>
+    <!-- Esmaece a página-->
+    <!--nav class="menu" id="principal">
+                <ul>
+                    <!--nav é uma seção de links de navegação.>
+                    <li style="border-bottom: 3px solid #fff"><a href="" class="voltar">Voltar</a></li>
+                    <li><a href="#Situacao">ATENDIMENTO<span>»</span></a></li>
+                    <li><a href="#">OPERACIONAL</a></li>
+                </ul>   
+            </nav-->
+    <!-- Bloco SITUAÇÃO: Ativas, Inativas (canceladas) ou Finalizadas -->
+    <!--<nav class="menu" id="Situacao">-->
+    <nav class="menu" id="principal">
+        <ul>
+            <!--<li style="border-bottom: 3px solid #fff" id="voltar"><a href="#" class="voltar">Voltar</a></li>-->
+            <li style="border-bottom: 3px solid #fff" id="voltar"><a href="" class="voltar">Voltar</a></li>
+            <li id="Ativa"><a href="#Ativas">Ativas<span>»</span></a></li>
+            <li id="Inativa"><a href="#Inativas">Inativas<span>»</span></a></li>
+            <li id="Finalizada"><a href="#Finalizadas">Finalizadas<span>»</span></a></li>
+        </ul>
+    </nav>
+    <nav class="navChksSituacao" id="Ativas">
+        <ul>
+            <li style="border-bottom: 3px solid #fff"><a href="#Situacao" class="voltar">Voltar</a></li>
+            <div class="container container_2">
+                <div class="boxCheck">
+                    <span class="rotuloChk"></span><input id="chkNormalA" class="switch switch--shadow" type="checkbox">
+                    <label for="chkNormalA"></label>
+                </div>
+                <div class="boxCheck">
+                    Normal
+                </div>
+            </div>
+            <div class="container container_2">
+                <div class="boxCheck">
+                    <span class="rotuloChk"></span><input id="chkSimultaneaA" class="switch switch--shadow" type="checkbox">
+                    <label for="chkSimultaneaA"></label>
+                </div>
+                <div class="boxCheck">Simultânea</div>
+            </div>
+            <div class="container container_2">
+                <div class="boxCheck">
+                    <span class="rotuloChk"></span><input id="chkExcecaoA" class="switch switch--shadow" type="checkbox">
+                    <label for="chkExcecaoA"></label>
+                </div>
+                <div class="boxCheck">Exceção</div>
+            </div>
+            <li id="Filtrar"><a href="#">Filtrar</a></li>
+        </ul>
+    </nav>
+    <!-- CHECKBOX DAS INATIVAS -->
+    <nav class="navChksSituacao" id="Inativas">
+        <ul>
+            <li style="border-bottom: 3px solid #fff"><a href="#Situacao" class="voltar">Voltar</a></li>
+            <div class="container container_2">
+                <div class="boxCheck">
+                    <span class="rotuloChk"></span><input id="chkNormal" class="switch switch--shadow" type="checkbox">
+                    <label for="chkNormal"></label>
+                </div>
+                <div class="boxCheck">
+                    Normal
+                </div>
+            </div>
+            <div class="container container_2">
+                <div class="boxCheck">
+                    <span class="rotuloChk"></span><input id="chkSimultanea" class="switch switch--shadow" type="checkbox">
+                    <label for="chkSimultanea"></label>
+                </div>
+                <div class="boxCheck">Simultânea</div>
+            </div>
+            <div class="container container_2">
+                <div class="boxCheck">
+                    <span class="rotuloChk"></span><input id="chkExcecao" class="switch switch--shadow" type="checkbox">
+                    <label for="chkExcecao"></label>
+                </div>
+                <div class="boxCheck">Exceção</div>
+            </div>
+            <li id="Filtrar"><a href="#">Filtrar</a></li>
+        </ul>
+    </nav>
+    <!-- CHECKBOX DAS FINALIZADAS -->
+    <nav class="navChksSituacao" id="Finalizadas">
+        <ul>
+            <li style="border-bottom: 3px solid #fff"><a href="#Situacao" class="voltar">Voltar</a></li>
+            <div class="container container_2">
+                <div class="boxCheck">
+                    <span class="rotuloChk"></span><input id="chkNormalB" class="switch switch--shadow" type="checkbox">
+                    <label for="chkNormalB"></label>
+                </div>
+                <div class="boxCheck">
+                    Normal
+                </div>
+            </div>
+            <div class="container container_2">
+                <div class="boxCheck">
+                    <span class="rotuloChk"></span><input id="chkSimultaneaB" class="switch switch--shadow" type="checkbox">
+                    <label for="chkSimultaneaB"></label>
+                </div>
+                <div class="boxCheck">Simultânea</div>
+            </div>
+            <div class="container container_2">
+                <div class="boxCheck">
+                    <span class="rotuloChk"></span><input id="chkExcecaoB" class="switch switch--shadow" type="checkbox">
+                    <label for="chkExcecaoB"></label>
+                </div>
+                <div class="boxCheck">Exceção</div>
+            </div>
+            <li id="Filtrar"><a href="#">Filtrar</a></li>
+        </ul>
+    </nav>
+    <!-- Bloco TIPO DE OPERACAO: Ativas, Inativas (canceladas) ou Finalizadas -->
+    <nav class="menu" id="Normal">
+        <ul>
+            <li><a href="#Situacao" class="voltar">Voltar</a></li>
+            <li><a href="#">Filtrar</a></li>
+        </ul>
+    </nav>
+    <nav class="menu" id="Simultanea">
+        <ul>
+            <li><a href="#Situacao">Voltar</a></li>
+            <li><a href="#">Filtrar</a></li>
+        </ul>
+    </nav>
+    <nav class="menu" id="Excecao">
+        <ul>
+            <li><a href="#Situacao">Voltar</a></li>
+            <li><a href="#">Filtrar</a></li>
+        </ul>
+    </nav>
+</body>
+
+</html>

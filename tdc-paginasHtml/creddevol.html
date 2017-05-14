@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <title>Verificar valor do CredDevol</title>
+    <!--ink href="../../Content/Site.css" rel="stylesheet" /-->
+    <script src="public/javascripts/jquery-3.1.1.min.js" type="text/javascript">
+    </script>
+    <script type="text/javascript">
+       $(document).ready(function () {
+            $('input#consulta-creddevol').on('click', function() {
+                var $this = $(this);
+                var idCancelamento = $('input#ValorCredDevol');
+
+                VerificarSaldo(idCancelamento.val());
+            });
+/*
+                    "CODIGOFILIAL": 226,
+                    "IDCANCELAMENTO": 6424097,
+                    "SLDTIT": 0,
+                    "PEDIDOVENDA": 323808978,
+                    "CODIGOITEMPRODUTO": 491310,
+                    "NOMEPRODUTO": "FERRO VAPOR ARNO ULTRAGLISS FU64BR/A 110V",
+                    "QUANTIDADE": 1,
+                    "VALORPRODUTO": 179.1,
+                    "VLFRETE": null,
+                    "VLMONTAGEM": null,
+                    "CODIGOPRODUTORELFRETE": null,
+                    "CODIGOPRODUTORELMONTAGEM": null
+*/                    
+
+            function VerificarSaldo(idCancelamento) {
+
+                console.log("idCancelamento: " + idCancelamento);
+
+                // Envia uma request AJAX
+                var credDevolUrl = "http://10.31.0.245:10200/creditoDevolucao/pedidos?idCancelamento=" + idCancelamento;
+                console.log("CredDevolUrl: " + credDevolUrl);
+
+                $.getJSON(credDevolUrl)
+                    .done(function (data) {
+                        // Se estiver ok , 'data' irá conter o saldo do CredDevol
+                        var saldoCredDevol = data.records.SLDTIT;
+
+                        console.log("1: " + saldoCredDevol);
+                        console.log("2: " + data.records[0].CODIGOFILIAL);
+                        console.log("3: " + data.records[0].IDCANCELAMENTO);
+                        console.log("4: " + data.records[0].PEDIDOVENDA);
+                        console.log("5: " + data.records[0].CODIGOITEMPRODUTO);
+                        console.log("6: " + data.records[0].NOMEPRODUTO);
+                        console.log("7: " + data.records[0].QUANTIDADE);
+                        console.log("7: " + data.records[0].VALORPRODUTO);
+
+                        $('#ValorCredDevol').val(saldoCredDevol);
+                    })
+                    .fail(function (jqXHR, textStatus, err) {
+                        alert('Impossivel verificar saldo, tente mais tarde: ' + err);
+                    });
+            };
+        });
+</script>
+</head>
+
+<body id="body" >
+    <div class="main-content">
+        <div>
+            <input type="text" id="ValorCredDevol" size="5"/>
+            <input type="button" id="consulta-creddevol" value="Consultar" />
+        </div>
+    </div>
+</body>
+</html>

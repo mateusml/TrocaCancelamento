@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Menu Lateral</title>
+    <style>
+        * { /* reseta valores iniciais de pagina */
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #f9f9f9;
+        }
+
+        header {
+            width: 100%;
+            height: 60px;
+            top: 0;
+            left: 0;
+            background-color: #02659B;
+            position: fixed;
+            z-index: 1;
+        }
+
+        nav {
+            width: 100%;
+            position: absolute;
+            top: 60px;
+        }
+
+            nav a {
+                text-decoration: none;
+            }
+
+        ul {
+            list-style: none;
+        }
+
+            ul li a {
+                display: block;
+                font-size: 18px;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                padding: 10px;
+                border-bottom: solid 1px #000;
+                color: #ccc;
+                text-decoration: none;
+                transition: all .2s;
+            }
+
+            ul li span {
+                float: right;
+                padding-right: 10px;
+            }
+
+            ul li a:hover {
+                background-color: #5b859a;
+            }
+
+        .link {
+            background-color: #6CA6CD;
+            padding: 20px;
+            font-family: 'Trebuchet MS';
+            font-size: 12pt;
+            transition: all .2s linear;
+            color: #f4f4f9;
+            border-bottom: 2px solid #CDCDB4;
+            opacity: 0;
+            margin-top: 200px;
+        }
+
+            .link:hover {
+                background-color: #0000CD;
+            }
+
+
+        #icone {
+            width: 23px;
+            height: 23px;
+            cursor: pointer;
+            padding: 15px;
+            z-index: 1;
+            position: absolute;
+        }
+
+        .menu {
+            background-color: #222;
+            height: 100%;
+            width: 300px;
+            position: fixed;
+            top: 0;
+            overflow: hidden;
+            transition: all .2s;
+        }
+
+        #principal {
+            width: 300px;
+            left: -300px;
+        }
+
+        .voltar {
+            margin-top: 60px;
+            background-color: #111;
+            border-left: solid 5px #444;
+        }
+
+        .bg {
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            position: fixed;
+            background-color: rgba(0,0,0,.2);
+            display: none;
+        }
+
+        #troca,
+        #cancelamento{
+            width: 350px;
+            left:-350px
+        }
+        
+
+        #troca:target,
+        #cancelamento:target{
+            transform: translateX(350px);
+            box-shadow: 2px 2px 5px 2px rgba(0, 0, 0,.5);
+        }
+
+        #check {
+            display: none;
+        }
+
+            #check:checked ~ .bg {
+                display: block;
+            }
+
+            #check:checked ~ #principal {
+                transform: translateX(300px);
+                box-shadow: 2px 2px 5px 2px rgba(0, 0, 0,.5);
+            }
+
+                #check:checked ~ #principal nav a .link {
+                    opacity: 1;
+                    margin-top: 0px;
+                    transition-delay: .2s;
+                }
+    </style>
+
+    <body>
+        <header></header>
+        <input type="checkbox" id="check">
+        <label id="icone" for="check"><img src="images/OpenCloseMenu.png" width="23px" height="23px"></label>
+
+        <div class="bg"></div> <!-- Esmaece a página-->
+
+        <nav class="menu" id="principal">
+            <ul>
+                <!--nav é uma seção de links de navegação.-->
+                <li><a href="" class="voltar">Voltar</a></li>
+                <li><a href="#troca">TROCA<span>+</span></a></li>
+                <li><a href="#cancelamento">CANCELAMENTO<span>+</span></a></li>
+                <li><a href="#">ATENDIMENTO</a></li>
+                <li><a href="#">OPERACIONAL</a></li>
+            </ul>
+        </nav>
+        <nav class="menu" id="troca">
+            <ul>
+                <!--nav é uma seção de links de navegação.-->
+                <li><a href="#" class="voltar">Voltar</a></li>
+                <li><a href="#">Filtro One</a></li>
+                <li><a href="#">Filtro Two</a></li>
+            </ul>
+        </nav>
+        <nav class="menu" id="cancelamento">
+            <ul>
+                <!--nav é uma seção de links de navegação.-->
+                <li><a href="#" class="voltar">Voltar</a></li>
+                <li><a href="#">Filtro One</a></li>
+                <li><a href="#">Filtro Two</a></li>
+                <li><a href="#">Filtro Three</a></li>
+            </ul>
+        </nav>
+
+    </body>
+</html>

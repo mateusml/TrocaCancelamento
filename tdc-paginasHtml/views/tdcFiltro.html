@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Menu Lateral</title>
+    <style>
+        * { /* reseta valores iniciais de pagina */
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #f9f9f9;
+        }
+
+        nav {
+            width: 100%;
+            position: absolute;
+            top: 60px;
+        }
+
+            nav a {
+                text-decoration: none;
+            }
+
+        .link {
+            background-color: #6CA6CD;
+            padding: 20px;
+            font-family: 'Trebuchet MS';
+            font-size: 12pt;
+            transition: all .2s linear;
+            color: #f4f4f9;
+            border-bottom: 2px solid #CDCDB4;
+            opacity: 0;
+            margin-top: 200px;
+        }
+
+            .link:hover {
+                background-color: #0000CD;
+            }
+
+
+        #icone {
+            width: 23px;
+            height: 23px;
+            cursor: pointer;
+            padding: 15px;
+            z-index: 1;
+            position: absolute;
+        }
+
+        .barra {
+            background-color: #00868B;
+
+            height: 100%;
+            width: 300px;
+            position: absolute;
+            transition: all .2s linear;
+            left: -300px;
+        }
+
+        #check {
+            display: none;
+        }
+
+            /* Transição da barra lateral - Controlada pelo click no checkbox (icone Menu)*/
+            #check:checked ~ .barra {
+                transform: translateX(300px);
+            }
+
+                #check:checked ~ .barra nav a .link {
+                    opacity: 1;
+                    margin-top: 0px;
+                    transition-delay: .2s;
+                }
+    </style>
+
+    <body>
+        <input type="checkbox" id="check">
+        <label id="icone" for="check"><img src="OpenCloseMenu.png" width="23px" height="23px"></label>
+
+        <div class="barra">
+            <nav>
+                <!--nav é uma seção de links de navegação.-->
+                <a href=""><div class="link">TROCA</div></a>
+                <a href=""><div class="link">CANCELAMENTO</div></a>
+                <a href=""><div class="link">ATENDIMENTO</div></a>
+                <a href=""><div class="link">OPERACIONAL</div></a>
+            </nav>
+        </div>
+
+    </body>
+</html>
